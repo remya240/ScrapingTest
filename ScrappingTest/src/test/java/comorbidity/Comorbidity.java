@@ -1,4 +1,4 @@
-package testBase;
+package comorbidity;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -9,8 +9,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import testBase.DatabaseHelper;
+import testBase.BaseClass;
+import util.ExcelReader;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.*;
@@ -23,7 +25,36 @@ public class Comorbidity extends BaseClass {
         List<Recipe> recipes = Collections.synchronizedList(new ArrayList<>()); // Thread-safe list
 
         List<String> pageBeginsWithList = Arrays.asList("0-9", "A", "B");
+        // Map to store ingredients for each comorbidity
+        Map<String, List<String>> ingredientsMap = new HashMap<>();
 
+        // Read ingredients from Excel for Diabetes and Hypothyroidism
+        try {
+            Map<String, List<String>> diabetesIngredients = ExcelReader.readIngredientsFromExcel(BaseClass.excelFilePath, "Diabetes");
+            Map<String, List<String>> hypothyroidismIngredients = ExcelReader.readIngredientsFromExcel(BaseClass.excelFilePath, "Hypothyroidism");
+
+            // Store eliminate and add lists in the ingredientsMap
+            ingredientsMap.put("Diabetes-Eliminate", diabetesIngredients.get("Eliminate"));
+            ingredientsMap.put("Diabetes-ToAdd", diabetesIngredients.get("To Add"));
+            ingredientsMap.put("Hypothyroidism-Eliminate", hypothyroidismIngredients.get("Eliminate"));
+            ingredientsMap.put("Hypothyroidism-ToAdd", hypothyroidismIngredients.get("To Add"));
+
+            System.out.println("Ingredients loaded successfully.");
+
+            // Display the contents of the ingredientsMap in the console
+            for (Map.Entry<String, List<String>> entry : ingredientsMap.entrySet()) {
+                String key = entry.getKey();  // Get the key (e.g., "Diabetes-Eliminate")
+                List<String> value = entry.getValue();  // Get the list of ingredients (e.g., ["Sugar", "Fried foods", "Refined carbs"])
+
+                // Print the key and the corresponding value
+                System.out.println(key + ": " + value);
+            }
+
+        } catch (IOException e) {
+            System.err.println("Error reading ingredients from Excel: " + e.getMessage());
+            e.printStackTrace();
+            return; // Exit the program if reading fails
+        }
         try {
             initializeDriver(); // Initialize WebDriver
             ExecutorService executor = Executors.newFixedThreadPool(10); // Thread pool for parallel tasks
