@@ -1,4 +1,4 @@
-package comorbidity;
+package testBase;
 
 
 	import java.sql.Connection;
@@ -6,7 +6,7 @@ package comorbidity;
 	import java.sql.PreparedStatement;
 	import java.sql.SQLException;
 
-import comorbidity.Comorbidity.Recipe;
+import testBase.Comorbidity.Recipe;
 
 	public class DatabaseHelper {
 
