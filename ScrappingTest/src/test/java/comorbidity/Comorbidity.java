@@ -74,7 +74,7 @@ public class Comorbidity extends BaseClass {
 
                 if (lastPage != 0) {
                     // Loop through all pages for each letter/number
-                    for (int j = 1; j <= 2; j++) {
+                    for (int j = 1; j <= 3; j++) {
                         driver.navigate().to("https://www.tarladalal.com/RecipeAtoZ.aspx?beginswith=" + pageBeginsWithList.get(k) + "&pageindex=" + j);
 
                         // Wait for recipe links to load on the page
