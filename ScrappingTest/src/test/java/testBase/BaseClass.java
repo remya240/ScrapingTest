@@ -8,6 +8,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class BaseClass {
 
     protected static WebDriver driver;
+    public static String excelFilePath = "C:\\RemyaProjects\\collaberative_git\\ScrappingTest\\src\\test\\resources\\utilities\\ElimateToadd.xlsx";
 
     // Setup WebDriver with ChromeOptions
     public static void initializeDriver() {
